@@ -23,6 +23,6 @@ count of colors: 3
    -c string
       count of matrix cols 
    -cc string
-      path to file data storage
+      count of colors
 ```
 For example: `go run main.go -r=5 -c=7 -cc=4`
