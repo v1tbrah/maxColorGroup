@@ -51,12 +51,9 @@ func main() {
 	GOOSIsLinux := runtime.GOOS == "linux"
 
 	fmt.Printf("matrix:\n")
-	coordForCheck := matrix.Coord{}
 	for row, _ := range mat {
 		fmt.Print("        ")
 		for col, _ := range mat[row] {
-			coordForCheck.X = row
-			coordForCheck.Y = col
 			if _, ok := mapCoordsOfMaxColorGroup[(row-1)*len(mat[0])+col]; ok && GOOSIsLinux {
 				fmt.Printf("\033[01;38;05;196m%d\033[0m ", mat[row][col])
 			} else {
