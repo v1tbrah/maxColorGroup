@@ -13,13 +13,14 @@ func GetCoordsOfMaxColorGroup(matrix [][]int) (coordsOfMaxColorGroup []Coord, co
 		return nil, color
 	}
 
-	checkedCoords := make(map[Coord]struct{}, len(matrix) * len(matrix[0]))
-	coordForCheck := Coord{}
+	rows, cols := len(matrix), len(matrix[0])
 
-	for row := 0; row < len(matrix); row++ {
-		for col := 0; col < len(matrix[0]); col++ {
-			coordForCheck.X = row
-			coordForCheck.Y = col
+	checkedCoords := make(map[int]struct{}, len(matrix)*len(matrix[0]))
+	coordForCheck := 0
+
+	for row := 0; row < rows; row++ {
+		for col := 0; col < cols; col++ {
+			coordForCheck = (row-1)*cols + col
 			if _, ok := checkedCoords[coordForCheck]; !ok {
 				currCoords := make([]Coord, 0)
 				fillCoordsOfColorGroup(matrix, row, col, matrix[row][col], checkedCoords, &currCoords)
@@ -34,22 +35,23 @@ func GetCoordsOfMaxColorGroup(matrix [][]int) (coordsOfMaxColorGroup []Coord, co
 	return coordsOfMaxColorGroup, color
 }
 
-func fillCoordsOfColorGroup(matrix [][]int, row, col, color int, checkedCoords map[Coord]struct{}, coords *[]Coord) {
+func fillCoordsOfColorGroup(matrix [][]int, row, col, color int, checkedCoords map[int]struct{}, coords *[]Coord) {
 	if len(matrix) == 0 {
 		return
 	}
 	if row < 0 || row >= len(matrix) || col < 0 || col >= len(matrix[0]) || matrix[row][col] != color {
 		return
 	}
-	if _, ok := checkedCoords[Coord{row, col}]; ok {
+	coordForCheck := (row-1)*len(matrix[0]) + col
+	if _, ok := checkedCoords[coordForCheck]; ok {
 		return
 	}
-	checkedCoords[Coord{row, col}] = struct{}{}
+	checkedCoords[coordForCheck] = struct{}{}
 
 	*coords = append(*coords, Coord{row, col})
 
-	fillCoordsOfColorGroup(matrix, row - 1, col,  color, checkedCoords, coords) // down
-	fillCoordsOfColorGroup(matrix, row + 1, col,  color, checkedCoords, coords) // up
-	fillCoordsOfColorGroup(matrix, row, col - 1,  color, checkedCoords, coords) // left
-	fillCoordsOfColorGroup(matrix, row, col + 1,  color, checkedCoords, coords) // right
+	fillCoordsOfColorGroup(matrix, row-1, col, color, checkedCoords, coords) // down
+	fillCoordsOfColorGroup(matrix, row+1, col, color, checkedCoords, coords) // up
+	fillCoordsOfColorGroup(matrix, row, col-1, color, checkedCoords, coords) // left
+	fillCoordsOfColorGroup(matrix, row, col+1, color, checkedCoords, coords) // right
 }

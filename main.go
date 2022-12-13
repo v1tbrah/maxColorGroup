@@ -23,7 +23,7 @@ func main() {
 
 	rows := flag.Int("r", defaultMatrixRows, "count of matrix rows")
 	cols := flag.Int("c", defaultMatrixCols, "count of matrix cols")
-	colors := flag.Int( "cc", defaultCountOfColors, "count of colors")
+	colors := flag.Int("cc", defaultCountOfColors, "count of colors")
 
 	flag.Parse()
 
@@ -43,19 +43,21 @@ func main() {
 	}
 
 	coordsOfMaxColorGroup, color := matrix.GetCoordsOfMaxColorGroup(mat)
-
-	mapCoordsOfMaxColorGroup := make(map[matrix.Coord]struct{}, len(coordsOfMaxColorGroup))
+	mapCoordsOfMaxColorGroup := make(map[int]struct{}, len(coordsOfMaxColorGroup))
 	for _, coord := range coordsOfMaxColorGroup {
-		mapCoordsOfMaxColorGroup[coord] = struct{}{}
+		mapCoordsOfMaxColorGroup[(coord.X-1)*len(mat[0])+coord.Y] = struct{}{}
 	}
 
 	GOOSIsLinux := runtime.GOOS == "linux"
 
 	fmt.Printf("matrix:\n")
+	coordForCheck := matrix.Coord{}
 	for row, _ := range mat {
 		fmt.Print("        ")
 		for col, _ := range mat[row] {
-			if _, ok := mapCoordsOfMaxColorGroup[matrix.Coord{row, col}]; ok && GOOSIsLinux {
+			coordForCheck.X = row
+			coordForCheck.Y = col
+			if _, ok := mapCoordsOfMaxColorGroup[(row-1)*len(mat[0])+col]; ok && GOOSIsLinux {
 				fmt.Printf("\033[01;38;05;196m%d\033[0m ", mat[row][col])
 			} else {
 				fmt.Printf("%d ", mat[row][col])
@@ -63,8 +65,6 @@ func main() {
 		}
 		fmt.Print("\n")
 	}
-
 	fmt.Print("\n")
 	fmt.Printf("color: %d\ncount of fields: %d\ncoords: %v\n", color, len(coordsOfMaxColorGroup), coordsOfMaxColorGroup)
-
 }

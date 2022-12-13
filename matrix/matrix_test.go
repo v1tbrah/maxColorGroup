@@ -16,13 +16,13 @@ func Test_GetCoordsOfMaxColorGroup(t *testing.T) {
 	}{
 		{
 			name: "empty matrix",
-			matrix: func () [][]int {
+			matrix: func() [][]int {
 				return nil
-			} (),
+			}(),
 		},
 		{
 			name: "one color matrix",
-			matrix: func () [][]int {
+			matrix: func() [][]int {
 				matrix := make([][]int, 3)
 				for row, _ := range matrix {
 					matrix[row] = make([]int, 3)
@@ -33,16 +33,16 @@ func Test_GetCoordsOfMaxColorGroup(t *testing.T) {
 					}
 				}
 				return matrix
-			} (),
+			}(),
 			wantCoordsOfMaxColorGroup: []Coord{
 				{0, 0}, {0, 1}, {0, 2},
 				{1, 0}, {1, 1}, {1, 2},
-				{2, 0}, {2,1}, {2,2},
+				{2, 0}, {2, 1}, {2, 2},
 			},
 		},
 		{
 			name: "three color matrix",
-			matrix: func () [][]int {
+			matrix: func() [][]int {
 				// 0 0 0
 				// 1 0 1
 				// 2 1 2
@@ -61,7 +61,7 @@ func Test_GetCoordsOfMaxColorGroup(t *testing.T) {
 				matrix[2][2] = 2
 
 				return matrix
-			} (),
+			}(),
 			wantCoordsOfMaxColorGroup: []Coord{
 				{0, 0}, {0, 1}, {0, 2},
 				{1, 1},
@@ -69,7 +69,7 @@ func Test_GetCoordsOfMaxColorGroup(t *testing.T) {
 		},
 		{
 			name: "three color matrix with check diagonal",
-			matrix: func () [][]int {
+			matrix: func() [][]int {
 				// 0 0 0
 				// 1 0 1
 				// 0 1 2
@@ -88,7 +88,7 @@ func Test_GetCoordsOfMaxColorGroup(t *testing.T) {
 				matrix[2][2] = 2
 
 				return matrix
-			} (),
+			}(),
 			wantCoordsOfMaxColorGroup: []Coord{
 				{0, 0}, {0, 1}, {0, 2},
 				{1, 1},
